@@ -1,0 +1,43 @@
+# Cloudflare named-tunnel config for IDP-Playground (public mode)
+#
+# Copy this to docker/cloudflared/config.yml and edit:
+#   1. Replace <TUNNEL_ID> with your tunnel's UUID (from `cloudflared tunnel create`).
+#   2. Replace the example.com hostnames with your own subdomains.
+#   3. Put your tunnel credentials JSON next to this file as <TUNNEL_ID>.json
+#      (created by `cloudflared tunnel create`), and make sure credentials-file
+#      below points at it (the path is inside the container: /etc/cloudflared/...).
+#
+# Each public hostname maps to one of the five local services. cloudflared runs
+# inside the same container, so it reaches them on localhost.
+
+tunnel: <TUNNEL_ID>
+credentials-file: /etc/cloudflared/<TUNNEL_ID>.json
+
+# Optional niceties
+no-autoupdate: true
+warp-routing:
+  enabled: false
+
+ingress:
+  # IDP-Playground admin / IdP
+  - hostname: idp.example.com
+    service: http://localhost:8080
+
+  # OIDC test client
+  - hostname: oidc.example.com
+    service: http://localhost:5000
+
+  # SAML test client
+  - hostname: saml.example.com
+    service: http://localhost:5001
+
+  # OAuth2 test client
+  - hostname: oauth2.example.com
+    service: http://localhost:5002
+
+  # WS-Fed test client
+  - hostname: wsfed.example.com
+    service: http://localhost:5003
+
+  # Required catch-all: anything not matched returns 404
+  - service: http_status:404

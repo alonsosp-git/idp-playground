@@ -1,0 +1,48 @@
+# IDP-Playground Identity Platform — docker compose
+#
+# Quick start:
+#   docker compose -f docker/docker-compose.yml up --build
+#
+# Then open:
+#   http://localhost:8080   IDP-Playground admin (IDP-DS + IDP-TS)
+#   http://localhost:5000   OIDC test client
+#   http://localhost:5001   SAML test client
+#   http://localhost:5002   OAuth2 test client
+#   http://localhost:5003   WS-Fed test client
+#
+# Default admin login:
+#   administrator@corp.idp-playground.local  /  Admin@IDP-Playground1
+
+services:
+  idp-playground:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: idp-playground:latest
+    container_name: idp-playground
+    ports:
+      - "8080:8080"   # admin / IdP
+      - "5000:5000"   # OIDC client
+      - "5001:5001"   # SAML client
+      - "5002:5002"   # OAuth2 client
+      - "5003:5003"   # WS-Fed client
+    environment:
+      # Single-container: clients reach the server on localhost, which is also
+      # what the browser uses, so redirects line up. Leave as-is for the demo.
+      IDPPLAYGROUND_BASE: "http://localhost:8080"
+      RUN_CLIENTS: "1"
+      SERVER_PORT: "8080"
+    volumes:
+      # Persist the SQLite database across restarts. Remove this line for a
+      # fully ephemeral demo that reseeds on every start.
+      - idp-playground-data:/app/instance
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8080/api/ds/stats"]
+      interval: 30s
+      timeout: 4s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  idp-playground-data:

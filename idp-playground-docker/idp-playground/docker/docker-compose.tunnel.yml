@@ -1,0 +1,54 @@
+# IDP-Playground — PUBLIC mode via Cloudflare named tunnel
+#
+# This runs the same image but exposes it on the internet through your
+# Cloudflare tunnel, on stable HTTPS hostnames you control.
+#
+# Prerequisites (one-time, see docker/README.md for the full walkthrough):
+#   1. A domain added to Cloudflare (free plan is fine).
+#   2. `cloudflared tunnel login` then `cloudflared tunnel create idp-playground`
+#      to get a tunnel UUID and a credentials JSON file.
+#   3. DNS routes: `cloudflared tunnel route dns idp-playground idp.example.com`
+#      (repeat for oidc/saml/oauth2/wsfed subdomains).
+#   4. Copy docker/cloudflared/config.example.yml to docker/cloudflared/config.yml,
+#      fill in your tunnel UUID and hostnames, and drop the <UUID>.json credentials
+#      file into docker/cloudflared/.
+#
+# Then edit the five *_PUBLIC_URL values + IDPPLAYGROUND_BASE below to match your
+# hostnames, and run:
+#
+#   docker compose -f docker/docker-compose.tunnel.yml up --build
+#
+# Your services will be live at the public HTTPS hostnames. No host ports are
+# published because traffic arrives through the tunnel, not the host.
+
+services:
+  idp-playground:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    image: idp-playground:latest
+    container_name: idp-playground-public
+    environment:
+      # Turn on the tunnel
+      TUNNEL_ENABLED: "1"
+      TUNNEL_CONFIG: "/etc/cloudflared/config.yml"
+
+      # Public hostnames — EDIT THESE to your own domain. They must match the
+      # hostnames in docker/cloudflared/config.yml.
+      IDPPLAYGROUND_BASE:    "https://idp.example.com"
+      OIDC_PUBLIC_URL:   "https://oidc.example.com"
+      SAML_PUBLIC_URL:   "https://saml.example.com"
+      OAUTH2_PUBLIC_URL: "https://oauth2.example.com"
+      WSFED_PUBLIC_URL:  "https://wsfed.example.com"
+
+      RUN_CLIENTS: "1"
+      SERVER_PORT: "8080"
+    volumes:
+      # Tunnel config + credentials (read-only)
+      - ./cloudflared:/etc/cloudflared:ro
+      # Persist the database
+      - idp-playground-data:/app/instance
+    restart: unless-stopped
+
+volumes:
+  idp-playground-data:

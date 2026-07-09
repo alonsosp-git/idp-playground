@@ -1,0 +1,41 @@
+IDP-Playground — Educational Identity Provider (demo)
+Copyright 2026 Alonso
+
+Licensed under the Apache License, Version 2.0 (see the LICENSE file).
+
+------------------------------------------------------------------------
+DISCLAIMER / TRADEMARKS / AFFILIATION
+------------------------------------------------------------------------
+This project is an independent, educational demonstration of federated
+identity and single sign-on protocols. It is NOT affiliated with,
+endorsed by, sponsored by, or connected to Microsoft, HashiCorp, Okta,
+Google, or any other company.
+
+All product names, logos, and brands are the property of their respective
+owners. Names such as Microsoft, Azure, Microsoft Entra, Active Directory,
+AD FS, SharePoint, Dynamics, Windows, Okta, Google Authenticator, Authy,
+HashiCorp, and Vault are trademarks or registered trademarks of their
+respective owners and are used here only nominatively/descriptively to
+explain protocol compatibility and comparisons. Their use does not imply
+any endorsement or affiliation.
+
+This software implements published, open standards:
+  - OAuth 2.0 (IETF RFC 6749) and PKCE (RFC 7636)
+  - OpenID Connect Core 1.0 (OpenID Foundation)
+  - SAML 2.0 (OASIS)
+  - WS-Federation 1.2 (OASIS)
+Protocol namespace identifiers (e.g. urn:oasis:..., docs.oasis-open.org,
+schemas.xmlsoap.org, www.w3.org) are standard identifiers required for
+interoperability and are not proprietary content of this project.
+
+------------------------------------------------------------------------
+NOT FOR PRODUCTION USE
+------------------------------------------------------------------------
+This is a learning/demo tool. It ships with seeded demo credentials,
+fixed development secret keys, a self-signed certificate authority, and
+debug mode enabled. Do not use it to protect real accounts, real data,
+or any production system.
+
+Third-party dependencies are distributed under their own licenses
+(e.g. Flask - BSD, cryptography - Apache-2.0/BSD, PyJWT - MIT,
+bcrypt - Apache-2.0, pyotp - MIT, qrcode - BSD).
