@@ -1,5 +1,6 @@
 # idp-playground
-IDP-Playground: a self-contained, educational Directory Service and Identity Provider you run locally. Implements OIDC, OAuth 2.0 + PKCE, SAML 2.0 &amp; WS-Federation, with a mini directory, users/groups, MFA (TOTP, email, certificate/CBA, passkey) and four test apps to see SSO end-to-end. Demo/learning only — not for production.
+IDP-Playground: a self-contained, educational Directory Service and Identity Provider you run locally. 
+Implements OIDC, OAuth 2.0 + PKCE, SAML 2.0 &amp; WS-Federation, with a mini directory, users/groups, MFA (TOTP, email, certificate/CBA, passkey) and four test apps to see SSO end-to-end. Demo/learning only — not for production.
 
 <img width="1902" height="986" alt="IDP Playground" src="https://github.com/user-attachments/assets/53638b76-d129-46e2-85a2-4b6cd183fd89" />
 
